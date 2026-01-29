@@ -53,15 +53,15 @@ To keep the scope focused, the following features are intentionally **out of sco
 ---
 
 ## 🧱 Project Structure (planned)
-
-ogger/
+```
+logger/
 ├── include/
 │ └── logger/
 ├── src/
 ├── examples/
 ├── tests/
 └── CMakeLists.txt
-
+```
 ---
 
 ## 🧠 Design Philosophy
