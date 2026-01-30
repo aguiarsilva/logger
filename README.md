@@ -36,6 +36,14 @@ To keep the scope focused, the following features are intentionally **out of sco
 - **Build system:** CMake
 - **Compiler:** clang++ / g++
 - **Threading:** std::thread, std::mutex, std::condition_variable
+- **Debugger:** lldb / gdb
+- **Warnings:** -Wall -Wextra -Werror
+- **Formatting:** clang-format
+- **Static Analysis:** clang-tidy (optional)
+- **Testing Framework:** Catch2 (planned)
+
+This toolchain was chosen to prioritize portability, modern C++ features, 
+and strong compile-time diagnostics during development.
 
 ---
 
@@ -53,15 +61,15 @@ To keep the scope focused, the following features are intentionally **out of sco
 ---
 
 ## 🧱 Project Structure (planned)
-
-ogger/
+```
+logger/
 ├── include/
 │ └── logger/
 ├── src/
 ├── examples/
 ├── tests/
 └── CMakeLists.txt
-
+```
 ---
 
 ## 🧠 Design Philosophy
