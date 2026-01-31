@@ -17,5 +17,4 @@ namespace logger {
             std::string format(const LogMessage& msg) override;
 
     };
-
 };
