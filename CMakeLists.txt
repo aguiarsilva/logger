@@ -26,7 +26,7 @@ target_include_directories(logger
 )
 
 # Compiler flags for warnings
-target_copile_options(logger
+target_compile_options(logger
 	PRIVATE
 		-Wall
 		-Wextra

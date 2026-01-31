@@ -2,6 +2,7 @@
 
 #include <string>
 #include "sink.hpp"
+#include "log_messages.hpp"
 
 namespace logger {
 
