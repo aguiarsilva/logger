@@ -1,4 +1,5 @@
 #include "../include/logger/file_sink.hpp"
+#include "../include/logger/formatter.hpp"
 
 namespace logger {
     FileSink::FileSink(const std::string& filename, std::unique_ptr<Formatter> formatter) : Sink(std::move(formatter)), _file(filename, std::ios::app) {}

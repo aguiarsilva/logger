@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "log_level.hpp"
+#include <mutex>
 
 namespace logger {
 
@@ -39,6 +40,8 @@ namespace logger {
             std::string _name;
             LogLevel    _level;
             std::vector<std::shared_ptr<Sink>> _sinks;
+
+            std::mutex _mutex;
 
             void    log(LogLevel level, const std::string& msg);
     };

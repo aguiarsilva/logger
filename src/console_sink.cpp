@@ -1,4 +1,5 @@
 #include "../include/logger/console_sink.hpp"
+#include "../include/logger/formatter.hpp"
 #include <iostream>
 
 namespace logger {
