@@ -40,6 +40,6 @@ namespace logger {
             LogLevel    _level;
             std::vector<std::shared_ptr<Sink>> _sinks;
 
-            void    log(LogLevel level, const std::string& message);
+            void    log(LogLevel level, const std::string& msg);
     };
 }
