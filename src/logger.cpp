@@ -19,26 +19,35 @@ namespace logger {
     //implement logger constructor
     Logger::Logger(const std::string& name) 
         : _name(name),
-        _level(LogLevel::Info) {}
+        _level(LogLevel::Info),
+        _running(true),
+        _worker(&Logger::worker_loop, this) {}
     
-    Logger::~Logger() = default;
+    Logger::~Logger() {
+        {
+        std::lock_guard<std::mutex> lock(_queue_mutex);
+        _running = false;
+        }
+        _cv.notify_one();
+
+        if (_worker.joinable())
+            _worker.join();
+    }
 
      void Logger::set_level(LogLevel level)
      {
-        std::lock_guard<std::mutex> lock(_mutex);
+        std::lock_guard<std::mutex> lock(_queue_mutex);
         
         _level = level;
      }
 
      void    Logger::add_sink(std::shared_ptr<Sink> sink) {
-        std::lock_guard<std::mutex> lock(_mutex);
+        std::lock_guard<std::mutex> lock(_queue_mutex);
 
         _sinks.push_back(std::move(sink));
      }
 
     void    Logger::log(LogLevel level, const std::string& msg) {
-        //mutex to lock should be used only 
-        std::lock_guard<std::mutex> lock(_mutex);
 
         if (_level < level)
             return;
@@ -50,10 +59,11 @@ namespace logger {
             msg
         };
 
-        for (const auto& sink : _sinks)
         {
-            sink->write(message);
+            std::lock_guard<std::mutex> lock(_queue_mutex);
+            _queue.push(std::move(message));
         }
+        _cv.notify_one();
     }
 
      void    Logger::trace(const std::string& message) {
@@ -74,6 +84,33 @@ namespace logger {
     
     void    Logger::error(const std::string& message) {
         log(LogLevel::Error, message);
+    }
+
+    void    Logger::worker_loop() {
+        while (true) {
+            std::unique_lock<std::mutex> lock(_queue_mutex);
+
+            _cv.wait(lock, [this] {
+                return !_queue.empty() || !_running;
+            });
+
+            while (!_queue.empty()) {
+                LogMessage msg = std::move(_queue.front());
+                _queue.pop();
+
+                lock.unlock();
+
+                for (const auto& sink : _sinks) {
+                    sink->write(msg);
+                } 
+
+                lock.lock();
+            }
+
+            if (!_running && _queue.empty())
+                break;
+        }
+
     }
 
 }

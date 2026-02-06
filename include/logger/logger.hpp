@@ -4,7 +4,12 @@
 #include <vector>
 #include <memory>
 #include "log_level.hpp"
+#include "log_messages.hpp"
 #include <mutex>
+#include <queue>
+#include <thread>
+#include <condition_variable>
+#include <atomic>
 
 namespace logger {
 
@@ -41,8 +46,14 @@ namespace logger {
             LogLevel    _level;
             std::vector<std::shared_ptr<Sink>> _sinks;
 
-            std::mutex _mutex;
+            std::mutex _queue_mutex;
+            std::condition_variable _cv;
+            std::queue<LogMessage> _queue;
+            std::atomic<bool> _running;
+            std::thread _worker;
 
+
+            void    worker_loop();
             void    log(LogLevel level, const std::string& msg);
     };
 }

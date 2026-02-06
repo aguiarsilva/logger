@@ -49,7 +49,7 @@ int main() {
 
     //Single thread tests
     log.info("== BASIC LOGGING TEST ===");
-    threaded_test(log);
+    basic_test(log);
 
     //Multithreaded test
     log.info("== MULTI-THREADED LOGGING TEST ===");
