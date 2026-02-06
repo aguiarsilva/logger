@@ -18,6 +18,8 @@ add_library(logger STATIC
 	src/logger.cpp
 	src/sink.cpp
 	src/formatter.cpp
+	src/console_sink.cpp
+	src/file_sink.cpp
 )
 
 target_include_directories(logger
