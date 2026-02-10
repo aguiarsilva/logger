@@ -42,7 +42,7 @@ To keep the scope focused, the following features are intentionally **out of sco
 - **Warnings:** -Wall -Wextra -Wpedantic
 - **Formatting:** clang-format
 - **Static Analysis:** clang-tidy (optional)
-- **Testing Framework:** Catch2 (planned)
+- **Testing Framework:** Catch2
 
 This toolchain was chosen to prioritize portability, modern C++ features,
 and strong compile-time diagnostics during development.
@@ -197,7 +197,7 @@ throughput.
 - [x] Graceful shutdown and log flushing
 
 **Phase 5 — Testing & Polish**
-- [ ] Unit tests
+- [x] Unit tests
 - [ ] Benchmarks
 - [ ] Documentation refinements
 
