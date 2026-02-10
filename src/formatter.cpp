@@ -18,6 +18,6 @@ namespace logger {
     std::string SimpleFormatter::format(const LogMessage& msg) {
         return "[" + msg.timestamp + "]" 
             + "[" + level_to_str(msg.level) + "]" 
-            + msg.text; 
+            + msg.message; 
     }
 };

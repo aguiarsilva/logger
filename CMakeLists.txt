@@ -6,6 +6,11 @@ project(logger
 	LANGUAGES CXX
 )
 
+enable_testing()
+
+add_subdirectory(external/Catch2)
+add_subdirectory(tests)
+
 #  Set C++ standard
 
 set(CMAKE_CXX_STANDARD 17)
@@ -20,6 +25,7 @@ add_library(logger STATIC
 	src/formatter.cpp
 	src/console_sink.cpp
 	src/file_sink.cpp
+	src/test_sink.cpp
 )
 
 target_include_directories(logger

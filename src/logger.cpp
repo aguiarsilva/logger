@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <ctime>
 #include <sstream>
+#include <iostream>
 
 namespace logger {
     static  std::string timestamp_now(){
@@ -21,15 +22,26 @@ namespace logger {
         : _name(name),
         _level(LogLevel::Info),
         _running(true),
-        _worker(&Logger::worker_loop, this) {}
+        _worker(&Logger::worker_loop, this) {
+            //std::cout << "Logger created, worker thread started" << std::endl;
+        }
     
     Logger::~Logger() {
         {
-        std::lock_guard<std::mutex> lock(_queue_mutex);
-        _running = false;
-        }
-        _cv.notify_one();
+        std::unique_lock<std::mutex> lock(_queue_mutex);
 
+        // flush all messages
+        while (!_queue.empty()) {
+            auto msg = std::move(_queue.front());
+            _queue.pop();
+
+            for (const auto& sink : _sinks)
+            sink->write(msg);
+        }
+        
+        _running = false;
+        _cv.notify_all();
+        }
         if (_worker.joinable())
             _worker.join();
     }
@@ -47,9 +59,20 @@ namespace logger {
         _sinks.push_back(std::move(sink));
      }
 
+    void Logger::flush() {
+        std::unique_lock<std::mutex> lock(_queue_mutex);
+        _cv.wait(lock, [this] {
+            return _queue.empty();        
+        });
+        lock.unlock();
+
+        // Need time for the worker thread to finish processing
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
     void    Logger::log(LogLevel level, const std::string& msg) {
 
-        if (_level < level)
+        if (_level > level)
             return;
 
         LogMessage message {
@@ -87,6 +110,7 @@ namespace logger {
     }
 
     void    Logger::worker_loop() {
+        //std::cout << "Worker thread running" << std::endl;
         while (true) {
             std::unique_lock<std::mutex> lock(_queue_mutex);
 
@@ -100,12 +124,15 @@ namespace logger {
 
                 lock.unlock();
 
+                //std::cout << "Processing message: " << msg.message << std::endl;
                 for (const auto& sink : _sinks) {
                     sink->write(msg);
                 } 
 
                 lock.lock();
             }
+
+            _cv.notify_all();
 
             if (!_running && _queue.empty())
                 break;

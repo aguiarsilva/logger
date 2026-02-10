@@ -1,5 +1,6 @@
 #include "../include/logger/test_sink.hpp"
 #include "../include/logger/sink.hpp"
+#include "../include/logger/formatter.hpp"
 
 TestSink::TestSink() : Sink(nullptr) {}
 

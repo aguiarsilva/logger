@@ -9,6 +9,6 @@ namespace logger {
         std::string logger_name;
         LogLevel    level;
         std::string timestamp;
-        std::string text;
+        std::string message;
     };
 };
