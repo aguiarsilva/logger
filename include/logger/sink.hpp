@@ -12,7 +12,7 @@ namespace logger {
         public:
             explicit Sink(std::unique_ptr<Formatter> formatter);
 
-            virtual ~Sink() = default;
+            virtual ~Sink();
             virtual void write(const LogMessage& msg) = 0;
 
         protected:

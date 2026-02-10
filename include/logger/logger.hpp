@@ -41,6 +41,9 @@ namespace logger {
             //add a sink (console, file..., )
             void    add_sink(std::shared_ptr<Sink> sink);
 
+            // Flush pending log messages
+            void    flush();
+            
         private:
             std::string _name;
             LogLevel    _level;
