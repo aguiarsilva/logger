@@ -122,20 +122,20 @@ Logging is **asynchronous by default** and follows a classic
 - Log messages are passed through a thread-safe queue
 
 ```
-Application threads
-    |
-    v
-log() calls
-    |
-    v
-Thread-safe queue
-    |
-    v
-Background worker thread
-    |
-    v
-Sink writes
-
+Thread 1 ─┐
+Thread 2 ─┤
+Thread 3 ─┤  log() calls (producers)
+  ...    ─┤
+Thread N ─┘
+          │
+          ▼
+   Thread-safe queue
+          │
+          ▼
+Background worker thread (consumer)
+          │
+          ▼
+     Sink writes
 ```
 
 ---
