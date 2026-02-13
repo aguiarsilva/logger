@@ -98,6 +98,48 @@ logger/
 ```
 ---
 
+## 🚀 Usage
+
+### Building the Project
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/aguiarsilva/logger.git
+   cd logger
+   ```
+
+2. Create a build directory:
+   ```bash
+   mkdir build
+   cd build
+   ```
+
+3. Configure with CMake:
+   ```bash
+   cmake ..
+   ```
+
+4. Build the project:
+   ```bash
+   cmake --build .
+   ```
+
+5. Run the example:
+   ```bash
+   ./logger
+   ```
+
+### Building for Benchmarks
+
+For optimized performance benchmarks, build with Release configuration:
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+---
+
 ## 🧠 Design Philosophy
 
 - Prefer clarity over cleverness
