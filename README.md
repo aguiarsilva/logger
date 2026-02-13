@@ -136,6 +136,8 @@ For optimized performance benchmarks, build with Release configuration:
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
+cd benchmark
+./logger_benchmark
 ```
 
 ---
