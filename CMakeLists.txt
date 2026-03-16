@@ -26,6 +26,7 @@ add_library(logger STATIC
 	src/console_sink.cpp
 	src/file_sink.cpp
 	src/test_sink.cpp
+	src/null_sink.cpp
 )
 
 target_include_directories(logger
@@ -46,8 +47,15 @@ add_executable(logger_example
 	examples/basic.cpp
 )
 
+add_executable(logger_benchmark
+    benchmark/benchmark_logger.cpp
+)
+
 # add target to link the libraries
 target_link_libraries(logger_example
 	PRIVATE logger
 )
 
+target_link_libraries(logger_benchmark
+    PRIVATE logger
+)
